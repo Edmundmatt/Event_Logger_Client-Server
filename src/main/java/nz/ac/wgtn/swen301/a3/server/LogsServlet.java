@@ -1,7 +1,5 @@
 package nz.ac.wgtn.swen301.a3.server;
 
-
-import org.apache.htt p.HttpException;
 import org.apache.log4j.spi.LoggingEvent;
 
 import javax.servlet.http.HttpServlet;
@@ -10,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LogsServlet extends HttpServlet {
 
@@ -26,7 +27,14 @@ public class LogsServlet extends HttpServlet {
         res.setContentType("text/plain");
         PrintWriter out = res.getWriter();
 
-        events.sort();
+        System.out.println(events.toString());
+        List<LoggingEvent> sortedEvents = events.stream()
+                .sorted(Comparator.comparing(LoggingEvent::getTimeStamp))
+                .collect(Collectors.toList());
+        int limitInt = Integer.parseInt(limit);
+        sortedEvents.subList(0, limitInt - 1);
+
+        System.out.println(sortedEvents.toString());
         out.close();
     }
 
@@ -37,6 +45,4 @@ public class LogsServlet extends HttpServlet {
     public void doDelete(HttpServletRequest req, HttpServletResponse res) throws IOException{
 
     }
-
-
 }
