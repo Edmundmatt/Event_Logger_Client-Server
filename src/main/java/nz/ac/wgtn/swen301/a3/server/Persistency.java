@@ -7,28 +7,29 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Persistency {
     private static Logger LOGGER = Logger.getLogger("org.apache.log4j");
-    private static ArrayList<JSONObject> DB = new ArrayList<>();
+    private static List<JSONObject> DB = newLogObjects();
     private static final int NUM_OF_EVENTS = 50;
 
-    public ArrayList<JSONObject> newEvents(){
-        ArrayList<JSONObject> events = new ArrayList<>();
+    public static List<JSONObject> newLogObjects(){
+        List<JSONObject> logObjects = new ArrayList<>();
         for(int i = 0; i < NUM_OF_EVENTS; i++){
-            events.add(randomEvent());
+            logObjects.add(randomLogObject());
         }
         //Randomise event order for test
-        Collections.shuffle(events);
-        return events;
+        Collections.shuffle(logObjects);
+        return logObjects;
     }
 
-    public ArrayList<JSONObject> getLogs(){
-        return this.DB;
+    public static List<JSONObject> getLogs(){
+        return DB;
     }
 
-    private static JSONObject randomEvent(){
+    private static JSONObject randomLogObject(){
         Random r = new Random();
         Level[] levels = {Level.TRACE, Level.DEBUG, Level.INFO, Level.WARN, Level.ERROR, Level.FATAL};
         Level level = levels[r.nextInt(levels.length)];

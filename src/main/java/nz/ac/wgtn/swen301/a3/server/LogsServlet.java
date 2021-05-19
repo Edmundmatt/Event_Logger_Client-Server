@@ -1,7 +1,5 @@
 package nz.ac.wgtn.swen301.a3.server;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServlet;
@@ -10,19 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class LogsServlet extends HttpServlet {
 
-    private ArrayList<JSONObject> events;
+    private static List<JSONObject> logObjects;
 
     public LogsServlet(){
-        Persistency p = new Persistency();
-        events = p.newEvents();
+        logObjects = Persistency.getLogs();
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -35,12 +30,14 @@ public class LogsServlet extends HttpServlet {
             return;
         }
 
-        //Get Logs 'limit' number events of the level type - in order by time
-        List<JSONObject> sortedEvents = events.stream()
+        //Get Logs 'limit' number events of the level type
+        List<JSONObject> sortedLogObjects = logObjects.stream()
                 .filter((object -> object.get("level") == level))
 //                .sorted(Comparator.comparing())
                 .collect(Collectors.toList());
-        sortedEvents.subList(0, Integer.parseInt(limit) - 1);
+        //Sort JSONObjects by time
+
+        sortedLogObjects.subList(0, Integer.parseInt(limit) - 1);
 
         //Output to html
         res.setContentType("text/plain");
@@ -50,10 +47,25 @@ public class LogsServlet extends HttpServlet {
         pw.println("<title>Logs</title>");
         pw.println("</head>");
         pw.println("<body>");
-        for(JSONObject object : sortedEvents){
+        pw.println("<p>[</p>");
+        for(JSONObject object : sortedLogObjects){
+            pw.println("<p style=\"margin-left: 40px\">{</p>");
 
+            //Check the JSONObject tags are correct
+
+            pw.println("<p style=\"margin-left: 80px\">");
+//            pw.println("\"id\": \""+ object.get("id") +"\",<br>");                       //id
+            pw.println("\"message\": \""+ object.get("message") +"\",<br>");             //message
+            pw.println("\"timestamp\": \""+ object.get("starttime") +"\",<br>");         //timestamp
+            pw.println("\"thread\": \""+ object.get("thread") +"\",<br>");               //thread
+            pw.println("\"logger\": \""+ object.get("logger") +"\",<br>");               //logger
+            pw.println("\"level\": \""+ object.get("level") +"\",<br>");                 //level
+//            pw.println("\"errorDetails\": \""+ object.get("errorDetails") +"\"<br>");   //error details
+            pw.println("</p>");
+
+            pw.println("<p style=\"margin-left: 40px\">}</p>");
         }
-        pw.println("<p>"+ "" +"</p>");
+        pw.println("<p>]</p>");
 
         pw.println("</body>");
         pw.println("</html>");
@@ -75,13 +87,17 @@ public class LogsServlet extends HttpServlet {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-        events.add(object);
+        logObjects.add(object);
+
         //Post logEvent String to http response
 
-
+        res.setStatus(HttpServletResponse.SC_CREATED);
     }
 
     public void doDelete(HttpServletRequest req, HttpServletResponse res) throws IOException{
+        //Clear JSONObjects from List
+        logObjects.clear();
+        res.setStatus(HttpServletResponse.SC_OK);
 
     }
 }
