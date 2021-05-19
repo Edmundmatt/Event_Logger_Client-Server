@@ -10,6 +10,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>LogsServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/resthome4logs</url-pattern>
     </servlet-mapping>
 </web-app>
