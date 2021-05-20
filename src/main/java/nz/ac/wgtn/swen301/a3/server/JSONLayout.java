@@ -30,11 +30,11 @@ public class JSONLayout extends Layout
             String message = loggingEvent.getRenderedMessage();
 
 
-            jsonObj.put("logger", logger);
-            jsonObj.put("level", level);
+            jsonObj.put("message", message);
             jsonObj.put("starttime", time);
             jsonObj.put("thread", thread);
-            jsonObj.put("message", message);
+            jsonObj.put("logger", logger);
+            jsonObj.put("level", level);
         }catch(Exception e){
             e.printStackTrace();
         }

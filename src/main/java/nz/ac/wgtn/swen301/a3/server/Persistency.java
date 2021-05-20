@@ -5,10 +5,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Persistency {
     private static Logger LOGGER = Logger.getLogger("org.apache.log4j");
@@ -21,7 +18,7 @@ public class Persistency {
             logObjects.add(randomLogObject());
         }
         //Randomise event order for test
-        Collections.shuffle(logObjects);
+//        Collections.shuffle(logObjects);
         return logObjects;
     }
 
@@ -37,11 +34,15 @@ public class Persistency {
                 level, "Message: Level - " + level, null);
 
         JSONObject jsonObj = new JSONObject();
+        //Create unique ID
+        String id = UUID.randomUUID().toString();
+        jsonObj.put("id", id);
         jsonObj.put("logger", event.getLoggerName());
         jsonObj.put("level", event.getLevel());
         jsonObj.put("starttime", event.getTimeStamp());
         jsonObj.put("thread", event.getThreadName());
         jsonObj.put("message", event.getMessage());
+        jsonObj.put("errorDetails", "string");
 
         return jsonObj;
     }

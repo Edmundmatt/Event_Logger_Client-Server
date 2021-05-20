@@ -3,6 +3,7 @@ package nz.ac.wgtn.swen301.a3.server;
 import org.json.JSONObject;
 
 public class JSONLogObject {
+    String id;
     String level;
     String logger;
     String startTime;
