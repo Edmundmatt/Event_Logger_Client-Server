@@ -94,4 +94,8 @@ public class LogsServlet extends HttpServlet {
         res.setStatus(HttpServletResponse.SC_OK); //Code 200
 
     }
+
+    public List<JSONObject> getLogObjects(){
+        return this.logObjects;
+    }
 }
