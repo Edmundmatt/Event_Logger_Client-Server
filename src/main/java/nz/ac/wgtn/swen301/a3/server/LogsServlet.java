@@ -55,9 +55,11 @@ public class LogsServlet extends HttpServlet {
         //Output
         res.setContentType("application/json");
         PrintWriter pw = res.getWriter();
-        for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i).toString());
-
+//        for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i).toString());
+//        String output = sortedLogObjects.stream()
+//                .collect(Collectors.joining(" "));
         pw.close();
+        res.setStatus(HttpServletResponse.SC_OK); //Code 200
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException{
@@ -68,9 +70,15 @@ public class LogsServlet extends HttpServlet {
         while((line = reader.readLine()) != null){
             output += line + "\n";
         }
-        JSONObject object = new JSONObject(output);
         //Check for bad input
-        if(object == null){
+        if(output.equals("")){
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST); //Code 400
+            return;
+        }
+        JSONObject object = new JSONObject(output);
+
+        //Check for empty JSONObject
+        if(object.toString().equals("{}")){
             res.sendError(HttpServletResponse.SC_BAD_REQUEST); //Code 400
             return;
         }

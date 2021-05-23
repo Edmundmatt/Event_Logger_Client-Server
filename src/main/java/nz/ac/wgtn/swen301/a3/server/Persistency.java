@@ -47,4 +47,22 @@ public class Persistency {
         return jsonObj;
     }
 
+    public JSONObject testObject(){
+        LoggingEvent event = new LoggingEvent("org.apache.logging.log4j", LOGGER, System.currentTimeMillis(),
+                Level.INFO, "Message: Level - " + Level.INFO, null);
+
+        JSONObject jsonObj = new JSONObject();
+        //Create unique ID
+        String id = UUID.randomUUID().toString();
+        jsonObj.put("id", id);
+        jsonObj.put("logger", event.getLoggerName());
+        jsonObj.put("level", event.getLevel());
+        jsonObj.put("starttime", event.getTimeStamp());
+        jsonObj.put("thread", event.getThreadName());
+        jsonObj.put("message", event.getMessage());
+        jsonObj.put("errorDetails", "string");
+
+        return jsonObj;
+    }
+
 }
