@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,15 +31,6 @@ public class LogsServlet extends HttpServlet {
             return;
         }
 
-        //Comparator for log times
-//        Comparator<JSONObject> comparator = new Comparator<JSONObject>() {
-//            @Override
-//            public int compare(JSONObject o1, JSONObject o2) {
-//                return Long.parseLong(o1.get("starttime")).compareTo(o2.get("starttime"));
-//            }
-//        };
-
-
         //Get Logs 'limit' number events of the level type
         List<JSONObject> sortedLogObjects = logObjects.stream()
                 .filter((object -> object.get("level") == level))
@@ -56,6 +46,7 @@ public class LogsServlet extends HttpServlet {
         res.setContentType("application/json");
         PrintWriter pw = res.getWriter();
 //        for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i).toString());
+        for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i));
 //        String output = sortedLogObjects.stream()
 //                .collect(Collectors.joining(" "));
         pw.close();

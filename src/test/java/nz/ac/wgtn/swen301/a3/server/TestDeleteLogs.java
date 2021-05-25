@@ -2,13 +2,12 @@ package nz.ac.wgtn.swen301.a3.server;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
 
-public class TestDeleteLogs extends Mockito {
+public class TestDeleteLogs {
 
     @Test
     public void testDelete1() throws IOException {

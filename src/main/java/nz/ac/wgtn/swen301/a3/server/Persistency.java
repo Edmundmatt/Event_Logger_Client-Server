@@ -1,14 +1,15 @@
 package nz.ac.wgtn.swen301.a3.server;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
+
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
 
 public class Persistency {
-    private static Logger LOGGER = Logger.getLogger("org.apache.log4j");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static List<JSONObject> DB = newLogObjects();
     private static final int NUM_OF_EVENTS = 50;
 
@@ -28,38 +29,34 @@ public class Persistency {
 
     private static JSONObject randomLogObject(){
         Random r = new Random();
-        Level[] levels = {Level.TRACE, Level.DEBUG, Level.INFO, Level.WARN, Level.ERROR, Level.FATAL};
-        Level level = levels[r.nextInt(levels.length)];
-        LoggingEvent event = new LoggingEvent("org.apache.logging.log4j", LOGGER, System.currentTimeMillis(),
-                level, "Message: Level - " + level, null);
+        String[] levels = {"TRACE", "Level", "DEBUG" , "INFO" , "WARN", "ERROR", "FATAL"};
+        String level = levels[r.nextInt(levels.length)];
 
         JSONObject jsonObj = new JSONObject();
-        //Create unique ID
+        //Create unique ID`
         String id = UUID.randomUUID().toString();
         jsonObj.put("id", id);
-        jsonObj.put("logger", event.getLoggerName());
-        jsonObj.put("level", event.getLevel());
-        jsonObj.put("starttime", event.getTimeStamp());
-        jsonObj.put("thread", event.getThreadName());
-        jsonObj.put("message", event.getMessage());
+        jsonObj.put("logger", "org.apache.logging.log4j");
+        jsonObj.put("level", level);
+        jsonObj.put("starttime", sdf.format(new Timestamp(System.currentTimeMillis())));
+        jsonObj.put("thread", "main");
+        jsonObj.put("message", "Message: Level - " + level);
         jsonObj.put("errorDetails", "string");
 
         return jsonObj;
     }
 
     public JSONObject testObject(){
-        LoggingEvent event = new LoggingEvent("org.apache.logging.log4j", LOGGER, System.currentTimeMillis(),
-                Level.INFO, "Message: Level - " + Level.INFO, null);
 
         JSONObject jsonObj = new JSONObject();
-        //Create unique ID
+        //Create unique ID`
         String id = UUID.randomUUID().toString();
         jsonObj.put("id", id);
-        jsonObj.put("logger", event.getLoggerName());
-        jsonObj.put("level", event.getLevel());
-        jsonObj.put("starttime", event.getTimeStamp());
-        jsonObj.put("thread", event.getThreadName());
-        jsonObj.put("message", event.getMessage());
+        jsonObj.put("logger", "org.apache.logging.log4j");
+        jsonObj.put("level", "INFO");
+        jsonObj.put("starttime", sdf.format(new Timestamp(System.currentTimeMillis())));
+        jsonObj.put("thread", "main");
+        jsonObj.put("message", "Message: Level - " + "INFO");
         jsonObj.put("errorDetails", "string");
 
         return jsonObj;
