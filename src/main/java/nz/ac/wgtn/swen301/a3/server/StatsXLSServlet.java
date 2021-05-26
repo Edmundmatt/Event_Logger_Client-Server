@@ -1,12 +1,17 @@
 package nz.ac.wgtn.swen301.a3.server;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,34 +27,42 @@ public class StatsXLSServlet extends HttpServlet {
 
         String[] levels = {"ALL", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "TRACE", "OFF"};
 
-        String header = buildHeader(levels);
-        HashMap<String, HashMap<String, Integer>> loggers = buildLoggersMap(levels);
-        String body = buildBody(loggers);
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("stats");
 
-        String output = header + body;
+        buildHeader(levels, sheet);
+        HashMap<String, HashMap<String, Integer>> loggers = buildLoggersMap(levels);
+        buildBody(loggers, sheet);
 
         res.setContentType("application/vnd.ms-excel");
-        PrintWriter pw = res.getWriter();
-        pw.print(output);
-        pw.flush();
-        pw.close();
+
+
+        OutputStream out = res.getOutputStream();
+        try{
+            workbook.write(out);
+        }catch(IOException io){
+            System.err.println("Excel write error");
+        }
+        workbook.close();
 
         //Testing
-        System.out.println(output);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        System.out.println(baos.toString(String.valueOf(out)));
 
         //Output response code 200
         res.setStatus(HttpServletResponse.SC_OK);
 
     }
 
-    private String buildHeader(String[] levels){
+    private void buildHeader(String[] levels, XSSFSheet sheet){
         //Create header
-        String header = "logger";
+        Row firstRow = sheet.createRow(0);
+        Cell cell = firstRow.createCell(0);
+        cell.setCellValue("logger");
         for(int i = 0; i < levels.length; i++){
-            header += "\t" + levels[i];
+            cell = firstRow.createCell(i + 1);
+            cell.setCellValue(levels[i]);
         }
-        header += "\n";
-        return header;
     }
 
     private HashMap<String, HashMap<String, Integer>> buildLoggersMap(String[] levels){
@@ -77,20 +90,23 @@ public class StatsXLSServlet extends HttpServlet {
         return loggers;
     }
 
-    private String buildBody(HashMap<String, HashMap<String, Integer>> loggers){
+    private void buildBody(HashMap<String, HashMap<String, Integer>> loggers, XSSFSheet sheet){
         //Build table body
         //This assumes the keyset is in order
-        String body = "";
+        int rowIndex = 0;
         for(String loggerName : loggers.keySet()){
+            rowIndex++;
+            Row row = sheet.createRow(rowIndex);
             HashMap<String, Integer> counts = loggers.get(loggerName);
-            String line = loggerName;
+            Cell cell = row.createCell(0);
+            cell.setCellValue(loggerName);
+            int cellIndex = 0;
             for(String level : counts.keySet()){
-                line += "\t" + counts.get(level);
+                cellIndex++;
+                cell = row.createCell(cellIndex);
+                cell.setCellValue(counts.get(level));
             }
-            line += "\n";
-            body += line;
         }
-        return body;
     }
 }
 

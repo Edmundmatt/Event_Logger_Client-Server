@@ -6,16 +6,15 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
 
-public class TestStatsCSVServlet {
+public class TestStatsXLSServlet {
 
     @Test
-    public void testStatsCSV1() throws IOException {
+    public void testStatsXLS1() throws IOException {
         MockHttpServletRequest req = new MockHttpServletRequest();
         MockHttpServletResponse res = new MockHttpServletResponse();
 //        LogsServlet servlet = new LogsServlet();
-        StatsCSVServlet csvServlet = new StatsCSVServlet();
+        StatsXLSServlet xlsServlet = new StatsXLSServlet();
 
-        csvServlet.doGet(req, res);
-
+        xlsServlet.doGet(req, res);
     }
 }
