@@ -8,16 +8,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class LogsServlet extends HttpServlet {
 
+    static{Persistency.setDB(Persistency.newLogObjects()); }
     private static List<JSONObject> logObjects = Persistency.getLogs();
 
+    private static List<String> levels =
+            Arrays.asList("ALL", "TRACE", "DEBUG","INFO", "WARN", "ERROR", "FATAL", "OFF");
+
     public LogsServlet(){
-        logObjects = Persistency.getLogs();
+
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -31,11 +38,16 @@ public class LogsServlet extends HttpServlet {
             return;
         }
 
-        //Get Logs 'limit' number events of the level type
-        List<JSONObject> sortedLogObjects = logObjects.stream()
-                .filter((object -> object.get("level") == level))
-                .collect(Collectors.toList());
-        Collections.reverse(sortedLogObjects);
+        //Get the list of logObjects above the minimum level
+        List<JSONObject> sortedLogObjects = new ArrayList<>();
+
+        int minimumLevel = levels.indexOf(level.toUpperCase());
+        for(JSONObject logObject : logObjects){
+            if(levels.indexOf(logObject.get("level").toString().toUpperCase()) >= minimumLevel){
+                sortedLogObjects.add(logObject);
+            }
+        }
+
 
         int limitInt = Integer.parseInt(limit);
         if(sortedLogObjects.size() < limitInt){
@@ -45,10 +57,8 @@ public class LogsServlet extends HttpServlet {
         //Output
         res.setContentType("application/json");
         PrintWriter pw = res.getWriter();
-//        for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i).toString());
-        for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i));
-//        String output = sortedLogObjects.stream()
-//                .collect(Collectors.joining(" "));
+        for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i).toString());
+//        for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i));
         pw.close();
         res.setStatus(HttpServletResponse.SC_OK); //Code 200
     }

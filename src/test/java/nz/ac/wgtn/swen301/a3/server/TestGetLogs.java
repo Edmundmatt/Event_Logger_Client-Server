@@ -6,6 +6,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 
 import static org.junit.Assert.assertEquals;
 
@@ -70,7 +71,19 @@ public class TestGetLogs
 
         servlet.doGet(req, res);
         assertEquals(200, res.getStatus());
-        assertEquals(res.getContentLength(), null);
+        assertEquals(res.getContentLength(), 0);
+    }
+
+    @Test
+    public void testStringOutput() throws IOException {
+        MockHttpServletRequest req = new MockHttpServletRequest();
+        MockHttpServletResponse res = new MockHttpServletResponse();
+        req.setParameter("limit", "1");
+        req.setParameter("level","info");
+        LogsServlet servlet = new LogsServlet();
+
+        servlet.doGet(req, res);
+        System.out.println(res.getContentAsString());
     }
 
 }
