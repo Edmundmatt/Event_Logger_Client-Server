@@ -40,7 +40,7 @@ public class Persistency {
         //Create unique ID`
         String id = UUID.randomUUID().toString();
         jsonObj.put("id", id);
-        jsonObj.put("logger", "logger " + count);
+        jsonObj.put("logger", "logger " + count % 5);
         jsonObj.put("level", level);
         jsonObj.put("starttime", sdf.format(new Timestamp(System.currentTimeMillis())));
         jsonObj.put("thread", "main");

@@ -17,7 +17,7 @@ public class StatsCSVServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
-        String[] levels = {"ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "OFF"};
+        String[] levels = {"ALL", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "TRACE", "OFF"};
         Map<String, Integer> counts = new HashMap<>();
         String header = "logger";
         for(int i = 0; i < levels.length; i++){

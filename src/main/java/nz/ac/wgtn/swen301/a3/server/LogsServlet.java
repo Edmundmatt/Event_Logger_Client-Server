@@ -21,7 +21,7 @@ public class LogsServlet extends HttpServlet {
     private static List<JSONObject> logObjects = Persistency.getLogs();
 
     private static List<String> levels =
-            Arrays.asList("ALL", "TRACE", "DEBUG","INFO", "WARN", "ERROR", "FATAL", "OFF");
+            Arrays.asList("ALL", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "TRACE", "OFF");
 
     public LogsServlet(){
 
