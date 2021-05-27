@@ -3,18 +3,21 @@ package nz.ac.wgtn.swen301.a3.server;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class TestStatsHTML {
 
     @Test
-    public void testStatsServlet1() throws IOException {
+    public void testStatsServletValidHTML() throws IOException {
         MockHttpServletRequest req = new MockHttpServletRequest();
         MockHttpServletResponse res = new MockHttpServletResponse();
         StatsServlet servlet = new StatsServlet();
@@ -32,7 +35,26 @@ public class TestStatsHTML {
     }
 
     @Test
-    public void testStatsServlet2(){
-        //TODO: So far only checking that the html is valid - must also check the format is as specified by assignment
+    public void testStatsServletContentType() throws IOException {
+        MockHttpServletRequest req = new MockHttpServletRequest();
+        MockHttpServletResponse res = new MockHttpServletResponse();
+        StatsServlet servlet = new StatsServlet();
+        servlet.doGet(req, res);
+
+        assertEquals(res.getContentType(), "text/html");
+
+    }
+
+    @Test
+    public void testStatsServletDataCorrectness() throws IOException {
+        MockHttpServletRequest req = new MockHttpServletRequest();
+        MockHttpServletResponse res = new MockHttpServletResponse();
+        StatsServlet servlet = new StatsServlet();
+        servlet.doGet(req, res);
+    }
+
+    private void htmlParser(MockHttpServletResponse res) throws IOException{
+        Document doc = Jsoup.parse(res.getContentAsString());
+
     }
 }
