@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class StatsServlet extends HttpServlet {
 
+    static{Persistency.setDB(Persistency.newLogObjects()); }
     private static List<JSONObject> logObjects = Persistency.getLogs();
 
     public StatsServlet(){
@@ -31,12 +32,13 @@ public class StatsServlet extends HttpServlet {
 
         res.setContentType("text/html");
         PrintWriter pw = res.getWriter();
-        pw.print(output);
+        pw.println("<html>");
+        pw.println("<table>");
+        pw.println(header);
+        pw.println(body);
+        pw.println("</table>");
         pw.flush();
         pw.close();
-
-        //Testing
-        System.out.println(output);
 
         //Output response code 200
         res.setStatus(HttpServletResponse.SC_OK);
@@ -45,11 +47,12 @@ public class StatsServlet extends HttpServlet {
 
     private String buildHeader(String[] levels){
         //Create header
-        String header = "logger";
+        String header = "<tr>";
+        header += "<th>logger</th>";
         for(int i = 0; i < levels.length; i++){
-            header += "\t" + levels[i];
+            header += "<th>" + levels[i] + "</th>";
         }
-        header += "\n";
+        header += "</tr>";
         return header;
     }
 
@@ -60,7 +63,7 @@ public class StatsServlet extends HttpServlet {
         for(JSONObject logObject: logObjects){
             String loggerName = logObject.get("logger").toString();
             //Add logger to map if not already present
-            if(!loggers.keySet().contains(loggerName)){
+            if(!loggers.containsKey(loggerName)){
                 //Initialise each count for logger
                 loggers.put(loggerName, new HashMap<>());
                 for(int i = 0; i < levels.length; i++){
@@ -84,11 +87,12 @@ public class StatsServlet extends HttpServlet {
         String body = "";
         for(String loggerName : loggers.keySet()){
             HashMap<String, Integer> counts = loggers.get(loggerName);
-            String line = loggerName;
+            String line = "<tr>";
+            line += "<th>" + loggerName + "</th>";
             for(String level : counts.keySet()){
-                line += "\t" + counts.get(level);
+                line += "<th>" + counts.get(level) + "</th>";
             }
-            line += "\n";
+            line += "</tr>";
             body += line;
         }
         return body;

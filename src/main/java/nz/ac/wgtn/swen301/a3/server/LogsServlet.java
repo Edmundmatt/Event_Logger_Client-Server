@@ -48,6 +48,7 @@ public class LogsServlet extends HttpServlet {
             }
         }
 
+
         int limitInt = Integer.parseInt(limit);
         if(sortedLogObjects.size() < limitInt){
             limitInt = sortedLogObjects.size();
@@ -57,9 +58,7 @@ public class LogsServlet extends HttpServlet {
         res.setContentType("application/json");
         PrintWriter pw = res.getWriter();
         for(int i = 0; i < limitInt; i++) pw.println(sortedLogObjects.get(i).toString());
-        pw.flush();
         pw.close();
-
         res.setStatus(HttpServletResponse.SC_OK); //Code 200
     }
 

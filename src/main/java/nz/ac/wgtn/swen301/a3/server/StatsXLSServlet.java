@@ -17,6 +17,7 @@ import java.util.List;
 
 public class StatsXLSServlet extends HttpServlet {
 
+    static{Persistency.setDB(Persistency.newLogObjects()); }
     private static List<JSONObject> logObjects = Persistency.getLogs();
 
     public StatsXLSServlet(){
@@ -44,10 +45,6 @@ public class StatsXLSServlet extends HttpServlet {
             System.err.println("Excel write error");
         }
         workbook.close();
-
-        //Testing
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        System.out.println(baos.toString(String.valueOf(out)));
 
         //Output response code 200
         res.setStatus(HttpServletResponse.SC_OK);

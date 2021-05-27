@@ -30,6 +30,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.3.6" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.3.6" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.3.6" />
+          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.13.1" />
         </element>
       </element>
       <element id="directory" name="META-INF">

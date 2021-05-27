@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class StatsCSVServlet extends HttpServlet {
 
+    static{Persistency.setDB(Persistency.newLogObjects()); }
     private static List<JSONObject> logObjects = Persistency.getLogs();
 
     public StatsCSVServlet(){
@@ -36,9 +37,6 @@ public class StatsCSVServlet extends HttpServlet {
         pw.print(output);
         pw.flush();
         pw.close();
-
-        //Testing
-        System.out.println(output);
 
         //Output response code 200
         res.setStatus(HttpServletResponse.SC_OK);
