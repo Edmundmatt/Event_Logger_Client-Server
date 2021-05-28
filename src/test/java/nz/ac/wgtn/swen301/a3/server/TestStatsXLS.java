@@ -42,12 +42,12 @@ public class TestStatsXLS {
         StatsXLSServlet xlsServlet = new StatsXLSServlet();
 
         xlsServlet.doGet(req, res);
-        String[][] data = getDataFromSheet();
         res.getOutputStream();
 
-    }
-
-    private String[][] getDataFromSheet() throws IOException {
 
     }
+
+//    private String[][] getDataFromSheet() throws IOException {
+//
+//    }
 }

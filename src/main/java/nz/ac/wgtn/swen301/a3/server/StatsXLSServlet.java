@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -39,12 +41,15 @@ public class StatsXLSServlet extends HttpServlet {
 
         OutputStream out = res.getOutputStream();
         try{
+            // To Servlet
             workbook.write(out);
+            // To file for testing
+            FileOutputStream fileOut = new FileOutputStream("application.xls");
+            workbook.write(fileOut);
         }catch(IOException io){
             System.err.println("Excel write error");
         }
         workbook.close();
-
         //Output response code 200
         res.setStatus(HttpServletResponse.SC_OK);
 
