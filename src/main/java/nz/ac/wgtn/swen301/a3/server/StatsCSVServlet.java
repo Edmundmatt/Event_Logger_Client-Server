@@ -27,7 +27,7 @@ public class StatsCSVServlet extends HttpServlet {
         String[] levels = {"ALL", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "TRACE", "OFF"};
 
         String header = buildHeader(levels);
-        HashMap<String, HashMap<String, Integer>> loggers = buildLoggersMap(levels);
+        HashMap<String, HashMap<String, Integer>> loggers = Stats.buildLoggersMap(levels);
         String body = buildBody(loggers);
 
         String output = header + body;

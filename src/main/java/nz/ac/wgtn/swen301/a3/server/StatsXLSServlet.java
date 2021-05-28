@@ -33,7 +33,7 @@ public class StatsXLSServlet extends HttpServlet {
         XSSFSheet sheet = workbook.createSheet("stats");
 
         buildHeader(levels, sheet);
-        HashMap<String, HashMap<String, Integer>> loggers = buildLoggersMap(levels);
+        HashMap<String, HashMap<String, Integer>> loggers = Stats.buildLoggersMap(levels);
         buildBody(loggers, sheet);
 
         res.setContentType("application/vnd.ms-excel");
@@ -46,6 +46,8 @@ public class StatsXLSServlet extends HttpServlet {
             // To file for testing
             FileOutputStream fileOut = new FileOutputStream("application.xls");
             workbook.write(fileOut);
+            fileOut.flush();
+            fileOut.close();
         }catch(IOException io){
             System.err.println("Excel write error");
         }

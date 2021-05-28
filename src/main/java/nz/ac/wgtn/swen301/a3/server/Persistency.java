@@ -19,7 +19,6 @@ public class Persistency {
             logObjects.add(randomLogObject(i + 1));
         }
         //Randomise event order for test
-//        Collections.shuffle(logObjects);
         return logObjects;
     }
 
@@ -50,7 +49,7 @@ public class Persistency {
         return jsonObj;
     }
 
-    public JSONObject testObject(){
+    public static JSONObject testObject(){
 
         JSONObject jsonObj = new JSONObject();
         //Create unique ID`

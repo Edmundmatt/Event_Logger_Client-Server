@@ -52,7 +52,6 @@ public class TestStatsCSV {
             System.out.println(values.get(logger).toString());
         }
         // Get actual logger level counts
-
     }
 
 
