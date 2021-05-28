@@ -24,8 +24,8 @@ public class Client{
                 request = requestFactory.buildGetRequest(
                         new GenericUrl("http://localhost:8080/resthome4logs/statscsv"));
             }else{
-//                request = requestFactory.buildGetRequest(
-//                        new GenericUrl("http://localhost:8080/resthome4logs/"));
+                request = requestFactory.buildGetRequest(
+                        new GenericUrl("http://localhost:8080/resthome4logs/"));
             }
 
             FileWriter file = new FileWriter(args[1]);
