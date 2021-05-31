@@ -53,8 +53,4 @@ public class TestStatsHTML {
         servlet.doGet(req, res);
     }
 
-    private void htmlParser(MockHttpServletResponse res) throws IOException{
-        Document doc = Jsoup.parse(res.getContentAsString());
-
-    }
 }
